@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   const { brand } = req.body;
   if (!brand) return res.status(400).json({ error: "Brand is required" });
 
-  const systemPrompt = `You are an expert local SEO and AI search visibility auditor. Given a brand name, use web search to research the brand, then output ONLY a JSON object — no markdown fences, no commentary — with this exact structure:
+  const systemPrompt = `You are an expert local SEO and AI search visibility auditor. Given a brand name, research what you know about the brand and output ONLY a JSON object — no markdown fences, no commentary — with this exact structure:
 
 {
   "trustScore": <integer 0-100>,
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
   "rationale": "<3-4 sentence rationale with specific recommendations>"
 }
 
-Base scores on real evidence from web search. trustScore = 5 trust signals quality. aiScore = AI platform coverage confidence.`;
+Base scores on your knowledge of the brand. trustScore reflects the 5 trust signals. aiScore reflects AI platform coverage. Unknown or obscure brands should score lower. Output only the JSON object, nothing else.`;
 
   try {
     const response = await fetch("https://api.anthropic.com/v1/messages", {
@@ -41,13 +41,22 @@ Base scores on real evidence from web search. trustScore = 5 trust signals quali
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
+        model: "claude-opus-4-5",
+        max_tokens: 1024,
+        messages: [
+          {
+            role: "user",
+            content: `Audit this brand and return only a JSON object: "${brand}"`,
+          },
+        ],
         system: systemPrompt,
-        tools: [{ type: "web_search_20250305", name: "web_search" }],
-        messages: [{ role: "user", content: `Audit this brand: "${brand}"` }],
       }),
     });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      return res.status(500).json({ error: `Anthropic API error: ${response.status} — ${errText}` });
+    }
 
     const data = await response.json();
 
@@ -57,7 +66,9 @@ Base scores on real evidence from web search. trustScore = 5 trust signals quali
       .join("\n");
 
     const match = allText.match(/\{[\s\S]*\}/);
-    if (!match) throw new Error("Could not parse audit response");
+    if (!match) {
+      return res.status(500).json({ error: "Could not parse audit response", raw: allText });
+    }
 
     res.status(200).json(JSON.parse(match[0]));
   } catch (err) {
