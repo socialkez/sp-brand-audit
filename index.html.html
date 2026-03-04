@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Brand Trust & AI Visibility Audit — Social Places</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:   #292242;
+      --purple: #413a60;
+      --pink:   #ea5296;
+      --violet: #b980d0;
+      --blue:   #8bb6e2;
+      --yellow: #f4db6c;
+      --teal:   #a0d4ce;
+      --coral:  #fa7f7f;
+      --light:  #e6e7e8;
+      --lighter:#f1f2f2;
+      --white:  #ffffff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 300;
+      background: var(--navy);
+      color: var(--light);
+      line-height: 1.6;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 40px;
+      height: 64px;
+      background: rgba(41,34,66,0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      display: flex; align-items: center; gap: 0;
+    }
+
+    .logo-c1 {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: transparent;
+      border: 2.5px solid var(--white);
+      /* left half */
+      clip-path: inset(0 50% 0 0);
+      margin-right: -2px;
+    }
+
+    .logo-c2 {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: transparent;
+      border: 2.5px solid var(--white);
+      clip-path: inset(0 0 0 50%);
+    }
+
+    /* Simpler: inline SVG logo */
+    .logo-svg { width: 36px; height: 20px; }
+
+    .nav-brand {
+      font-size: 14px; font-weight: 500; color: var(--white);
+      letter-spacing: 0.3px;
+    }
+
+    .nav-brand span { color: var(--pink); }
+
+    .nav-pill {
+      background: rgba(234,82,150,0.12);
+      border: 1px solid rgba(234,82,150,0.3);
+      color: var(--pink);
+      font-size: 11px; font-weight: 500;
+      padding: 5px 14px; border-radius: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 100px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 0%, rgba(234,82,150,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 10% 80%, rgba(185,128,208,0.1) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 30% at 90% 60%, rgba(139,182,226,0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* floating circles */
+    .hero-orb {
+      position: absolute; border-radius: 50%; pointer-events: none;
+      animation: drift 8s ease-in-out infinite alternate;
+    }
+    .hero-orb:nth-child(1) { width: 320px; height: 320px; top: -80px; right: -60px; background: radial-gradient(circle, rgba(234,82,150,0.08), transparent 70%); animation-duration: 9s; }
+    .hero-orb:nth-child(2) { width: 240px; height: 240px; bottom: 40px; left: -40px; background: radial-gradient(circle, rgba(185,128,208,0.07), transparent 70%); animation-duration: 11s; animation-delay: -3s; }
+    .hero-orb:nth-child(3) { width: 180px; height: 180px; top: 40%; left: 5%; background: radial-gradient(circle, rgba(139,182,226,0.06), transparent 70%); animation-duration: 7s; animation-delay: -1s; }
+
+    @keyframes drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(20px, -20px) scale(1.05); }
+    }
+
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(234,82,150,0.1);
+      border: 1px solid rgba(234,82,150,0.25);
+      color: var(--pink);
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 2px; text-transform: uppercase;
+      padding: 6px 16px; border-radius: 20px;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .eyebrow::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--pink);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.4; transform: scale(0.7); }
+    }
+
+    h1 {
+      font-size: clamp(36px, 5.5vw, 68px);
+      font-weight: 600; line-height: 1.1;
+      color: var(--white);
+      margin-bottom: 24px;
+      letter-spacing: -1px;
+      position: relative;
+    }
+
+    h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--pink) 0%, var(--violet) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 16px; font-weight: 300;
+      color: rgba(230,231,232,0.6);
+      max-width: 560px; margin: 0 auto 44px;
+      line-height: 1.8;
+      position: relative;
+    }
+
+    /* ─── TOOL CARD ─── */
+    .tool-card {
+      position: relative;
+      width: 100%; max-width: 680px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 36px 32px;
+      backdrop-filter: blur(20px);
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute; top: 0; left: 32px; right: 32px; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(234,82,150,0.4), transparent);
+    }
+
+    .input-group {
+      display: flex; gap: 12px; margin-bottom: 12px;
+    }
+
+    .brand-input {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px; font-weight: 300;
+      color: var(--white);
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .brand-input::placeholder { color: rgba(230,231,232,0.25); }
+    .brand-input:focus {
+      border-color: var(--pink);
+      background: rgba(234,82,150,0.04);
+    }
+
+    .audit-btn {
+      background: linear-gradient(135deg, var(--pink), var(--violet));
+      color: var(--white);
+      border: none; border-radius: 10px;
+      padding: 14px 28px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px; font-weight: 600;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .audit-btn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 8px 24px rgba(234,82,150,0.3); }
+    .audit-btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+    .tool-hint {
+      font-size: 11px; color: rgba(230,231,232,0.3);
+      text-align: center; letter-spacing: 0.3px;
+    }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      display: flex; gap: 0;
+      justify-content: center;
+      margin: 56px auto 0;
+      max-width: 680px;
+      position: relative;
+    }
+
+    .stat {
+      flex: 1; text-align: center;
+      padding: 20px 16px;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+    .stat:last-child { border-right: none; }
+
+    .stat-value {
+      font-size: 26px; font-weight: 600; color: var(--white);
+      margin-bottom: 4px;
+    }
+    .stat-value span { color: var(--pink); }
+    .stat-label { font-size: 11px; color: rgba(230,231,232,0.35); letter-spacing: 0.5px; }
+
+    /* ─── QUOTE ─── */
+    .quote-section {
+      padding: 64px 24px;
+      text-align: center;
+    }
+
+    .quote-inner {
+      max-width: 760px; margin: 0 auto;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-left: 3px solid var(--pink);
+      border-radius: 0 12px 12px 0;
+      padding: 28px 32px;
+    }
+
+    blockquote {
+      font-size: 16px; font-weight: 300;
+      color: rgba(230,231,232,0.75);
+      line-height: 1.8;
+    }
+
+    blockquote strong { color: var(--yellow); font-weight: 500; }
+
+    /* ─── SIGNALS EXPLAINER ─── */
+    .signals-section {
+      padding: 64px 24px;
+      max-width: 900px; margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 11px; font-weight: 500; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--pink);
+      margin-bottom: 12px;
+    }
+
+    .section-heading {
+      font-size: clamp(24px, 3vw, 36px); font-weight: 600;
+      color: var(--white); margin-bottom: 40px;
+      letter-spacing: -0.5px;
+    }
+
+    .signals-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .signal-item {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      padding: 24px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .signal-item:hover {
+      border-color: rgba(234,82,150,0.2);
+      background: rgba(234,82,150,0.03);
+    }
+
+    .signal-num {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, rgba(234,82,150,0.2), rgba(185,128,208,0.2));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 600; color: var(--pink);
+      margin-bottom: 14px;
+    }
+
+    .signal-name {
+      font-size: 13px; font-weight: 500; color: var(--white);
+      margin-bottom: 8px;
+    }
+
+    .signal-desc {
+      font-size: 12px; color: rgba(230,231,232,0.45); line-height: 1.7;
+    }
+
+    /* ─── RESULTS SECTION ─── */
+    #results-section {
+      padding: 0 24px 80px;
+      max-width: 900px; margin: 0 auto;
+    }
+
+    /* ─── LOADING ─── */
+    .loading-wrap {
+      text-align: center; padding: 64px 0;
+    }
+
+    .sp-loader {
+      width: 52px; height: 52px; margin: 0 auto 24px;
+      position: relative;
+    }
+
+    .sp-loader::before, .sp-loader::after {
+      content: ''; position: absolute;
+      border-radius: 50%;
+      border: 2px solid transparent;
+    }
+
+    .sp-loader::before {
+      inset: 0;
+      border-top-color: var(--pink);
+      animation: spin 0.9s linear infinite;
+    }
+
+    .sp-loader::after {
+      inset: 8px;
+      border-top-color: var(--violet);
+      animation: spin 0.7s linear infinite reverse;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading-brand {
+      font-size: 14px; font-weight: 500; color: var(--white);
+      margin-bottom: 6px;
+    }
+
+    .loading-sub { font-size: 12px; color: rgba(230,231,232,0.35); }
+
+    .load-steps { margin-top: 24px; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .load-step { font-size: 12px; color: rgba(230,231,232,0.2); transition: color 0.3s; }
+    .load-step.active { color: var(--pink); }
+    .load-step.done { color: var(--teal); }
+
+    /* ─── RESULTS ─── */
+    .results-wrap { animation: fadeUp 0.5s ease; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .results-header {
+      text-align: center; padding: 48px 0 36px;
+    }
+
+    .results-brand {
+      font-size: 13px; color: rgba(230,231,232,0.4);
+      letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;
+    }
+
+    .results-title {
+      font-size: 28px; font-weight: 600; color: var(--white);
+    }
+
+    .results-title span { color: var(--pink); }
+
+    /* Score cards */
+    .scores-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 28px;
+    }
+
+    @media (max-width: 560px) { .scores-grid { grid-template-columns: 1fr; } }
+
+    .score-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; padding: 28px 24px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+
+    .score-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    }
+
+    .score-card.trust::after { background: linear-gradient(90deg, var(--pink), var(--violet)); }
+    .score-card.ai::after   { background: linear-gradient(90deg, var(--teal), var(--blue)); }
+
+    .score-eyebrow {
+      font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: rgba(230,231,232,0.35); margin-bottom: 20px;
+    }
+
+    .ring-wrap {
+      position: relative; width: 130px; height: 130px; margin: 0 auto 20px;
+    }
+
+    .ring-wrap svg { transform: rotate(-90deg); }
+
+    .ring-center {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+
+    .ring-value {
+      font-size: 42px; font-weight: 600; line-height: 1;
+    }
+
+    .score-card.trust .ring-value { color: var(--pink); }
+    .score-card.ai    .ring-value { color: var(--teal); }
+
+    .ring-denom { font-size: 12px; color: rgba(230,231,232,0.25); margin-top: 4px; }
+
+    .score-name { font-size: 15px; font-weight: 500; color: var(--white); margin-bottom: 8px; }
+    .score-verdict { font-size: 12px; color: rgba(230,231,232,0.5); line-height: 1.7; }
+
+    /* Signals breakdown */
+    .breakdown-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px;
+    }
+
+    @media (max-width: 560px) { .breakdown-grid { grid-template-columns: 1fr; } }
+
+    .breakdown-card {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px; padding: 18px;
+      display: flex; gap: 14px; align-items: flex-start;
+    }
+
+    .badge {
+      width: 34px; height: 34px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; flex-shrink: 0;
+    }
+
+    .badge.pass { background: rgba(160,212,206,0.12); color: var(--teal); }
+    .badge.warn { background: rgba(244,219,108,0.1);  color: var(--yellow); }
+    .badge.fail { background: rgba(250,127,127,0.1);  color: var(--coral); }
+
+    .bd-label { font-size: 11px; font-weight: 500; color: rgba(230,231,232,0.5); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+
+    .bd-status { font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px; }
+    .bd-status.pass { color: var(--teal); }
+    .bd-status.warn { color: var(--yellow); }
+    .bd-status.fail { color: var(--coral); }
+
+    .bd-note { font-size: 12px; color: rgba(230,231,232,0.4); line-height: 1.6; }
+
+    /* AI Platforms */
+    .ai-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 28px;
+    }
+
+    @media (max-width: 560px) { .ai-grid { grid-template-columns: repeat(3, 1fr); } }
+
+    .ai-card {
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px; padding: 16px 8px;
+      text-align: center;
+    }
+
+    .ai-icon { font-size: 22px; margin-bottom: 8px; }
+    .ai-name { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(230,231,232,0.3); margin-bottom: 8px; }
+
+    .ai-status {
+      display: inline-block;
+      font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 4px 8px; border-radius: 4px;
+    }
+
+    .ai-status.yes     { background: rgba(160,212,206,0.12); color: var(--teal); }
+    .ai-status.no      { background: rgba(250,127,127,0.1);  color: var(--coral); }
+    .ai-status.partial { background: rgba(244,219,108,0.1);  color: var(--yellow); }
+    .ai-status.unknown { background: rgba(255,255,255,0.04); color: rgba(230,231,232,0.3); }
+
+    /* Rationale */
+    .rationale-box {
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-left: 3px solid var(--pink);
+      border-radius: 0 12px 12px 0;
+      padding: 24px 28px;
+      margin-bottom: 28px;
+    }
+
+    .rationale-box .rt-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--pink); margin-bottom: 16px;
+    }
+
+    .rationale-box p {
+      font-size: 13px; color: rgba(230,231,232,0.6); line-height: 1.9; margin-bottom: 10px;
+    }
+
+    .rationale-box p:last-child { margin-bottom: 0; }
+
+    /* ─── SECTION DIVIDER ─── */
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .divider span {
+      font-size: 12px; font-weight: 600; color: var(--white); letter-spacing: 0.3px; white-space: nowrap;
+    }
+
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.06);
+    }
+
+    /* ─── ERROR ─── */
+    .error-box {
+      background: rgba(250,127,127,0.05);
+      border: 1px solid rgba(250,127,127,0.2);
+      border-radius: 12px; padding: 24px;
+      text-align: center;
+      font-size: 13px; color: var(--coral);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding: 32px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 16px;
+    }
+
+    .footer-brand { font-size: 13px; color: rgba(230,231,232,0.35); }
+    .footer-brand strong { color: var(--pink); font-weight: 500; }
+
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a {
+      font-size: 12px; color: rgba(230,231,232,0.3);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--pink); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 640px) {
+      nav { padding: 0 20px; }
+      .tool-card { padding: 24px 20px; }
+      .input-group { flex-direction: column; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">
+      <svg class="logo-svg" viewBox="0 0 44 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 12C12 5.373 17.373 0 24 0" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M24.7 0C31.327 0 36.7 5.373 36.7 12S31.327 24 24.7 24" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-brand">Social<span>Places</span></span>
+    </a>
+    <div class="nav-pill">Free Audit Tool</div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-orb"></div>
+    <div class="hero-orb"></div>
+    <div class="hero-orb"></div>
+
+    <div class="eyebrow">AI-Powered Brand Intelligence</div>
+
+    <h1>Does your brand <em>show up</em><br/>where it matters?</h1>
+
+    <p class="hero-sub">
+      Score your brand across 5 trust signals and see exactly where you stand in Google AI Overviews, ChatGPT, Gemini, Claude, and Bing AI.
+    </p>
+
+    <div class="tool-card">
+      <div class="input-group">
+        <input id="brandInput" class="brand-input" type="text"
+          placeholder="Enter a brand name (e.g. McDonald's, Woolworths…)"
+          autocomplete="off" />
+        <button class="audit-btn" id="auditBtn" onclick="runAudit()">
+          Run Audit →
+        </button>
+      </div>
+      <p class="tool-hint">Powered by live web research · Takes ~15 seconds</p>
+    </div>
+
+    <div class="stats-bar">
+      <div class="stat">
+        <div class="stat-value"><span>5</span></div>
+        <div class="stat-label">Trust Signals</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value"><span>5</span></div>
+        <div class="stat-label">AI Platforms</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value"><span>2</span></div>
+        <div class="stat-label">Scores Delivered</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value">92<span>%</span></div>
+        <div class="stat-label">AI Citations = Top 10</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results-section"></section>
+
+  <!-- QUOTE -->
+  <section class="quote-section">
+    <div class="quote-inner">
+      <blockquote>
+        "92% of AI Overview citations link to domains already ranking in the top 10 — but high rankings don't guarantee inclusion. <strong>Trust signals do.</strong> Your brand needs to be authoritative, consistent, and cited everywhere AI looks."
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- SIGNALS EXPLAINER -->
+  <section class="signals-section">
+    <p class="section-label">The Framework</p>
+    <h2 class="section-heading">5 Trust Signals We Audit</h2>
+    <div class="signals-grid">
+      <div class="signal-item">
+        <div class="signal-num">1</div>
+        <div class="signal-name">E-E-A-T Across Locations</div>
+        <div class="signal-desc">Each location needs to reflect real expertise, not copy-paste content from head office. Google rewards demonstrable, location-specific authority.</div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-num">2</div>
+        <div class="signal-name">Review Volume & Sentiment</div>
+        <div class="signal-desc">Wildly inconsistent star ratings across locations signal quality issues that reduce brand trust in AI models and search engines alike.</div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-num">3</div>
+        <div class="signal-name">NAP Consistency</div>
+        <div class="signal-desc">Inconsistent names, addresses or phone numbers confuse the entity graph — meaning AI can't confidently surface your brand.</div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-num">4</div>
+        <div class="signal-name">Third-Party Citations</div>
+        <div class="signal-desc">Unlinked mentions in authoritative publications now function as trust signals. AI trains on the open web — your PR footprint matters.</div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-num">5</div>
+        <div class="signal-name">Branded Search Volume</div>
+        <div class="signal-desc">Low branded search is a proxy for low real-world reputation. Stable or growing branded queries signal a brand worth citing.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">© 2025 <strong>Social Places</strong> · Brand Trust & AI Visibility Audit</div>
+    <nav class="footer-links">
+      <a href="https://www.socialplaces.co.za" target="_blank">Social Places</a>
+      <a href="#">Privacy</a>
+    </nav>
+  </footer>
+
+  <script>
+    const LOAD_STEPS = [
+      "Searching brand presence across the web…",
+      "Analysing 5 trust signals…",
+      "Checking AI platform citations…",
+      "Generating audit report…",
+    ];
+
+    const AI_PLATFORMS = [
+      { key: "google",  name: "Google AIO", icon: "🔍" },
+      { key: "chatgpt", name: "ChatGPT",    icon: "🤖" },
+      { key: "gemini",  name: "Gemini",     icon: "✦"  },
+      { key: "claude",  name: "Claude",     icon: "◈"  },
+      { key: "bing",    name: "Bing AI",    icon: "⬡"  },
+    ];
+
+    function statusClass(s) {
+      if (!s) return "unknown";
+      const l = s.toLowerCase();
+      if (["yes","pass","strong","good"].includes(l)) return "pass";
+      if (["no","fail","poor","missing"].includes(l))  return "fail";
+      if (["partial","warn","moderate","weak"].includes(l)) return "warn";
+      return "unknown";
+    }
+
+    function statusIcon(s) {
+      const c = statusClass(s);
+      return c === "pass" ? "✓" : c === "fail" ? "✕" : c === "warn" ? "~" : "?";
+    }
+
+    function ringPath(value, max, color, size = 130) {
+      const r = 52, circ = 2 * Math.PI * r;
+      const pct = Math.min(value / max, 1);
+      return `<svg width="${size}" height="${size}" viewBox="0 0 130 130">
+        <circle cx="65" cy="65" r="${r}" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8"/>
+        <circle cx="65" cy="65" r="${r}" fill="none" stroke="${color}" stroke-width="8"
+          stroke-dasharray="${pct * circ} ${circ}" stroke-linecap="round"/>
+      </svg>`;
+    }
+
+    function renderResults(data, brand) {
+      const el = document.getElementById("results-section");
+
+      const signalsHtml = (data.signals || []).map(sig => {
+        const sc = statusClass(sig.status);
+        return `<div class="breakdown-card">
+          <div class="badge ${sc}">${statusIcon(sig.status)}</div>
+          <div>
+            <div class="bd-label">${sig.name}</div>
+            <div class="bd-status ${sc}">${sig.status}</div>
+            <div class="bd-note">${sig.note}</div>
+          </div>
+        </div>`;
+      }).join("");
+
+      const aiHtml = AI_PLATFORMS.map(p => {
+        const val = data.aiPlatforms?.[p.key] || "Unknown";
+        const sc  = statusClass(val);
+        return `<div class="ai-card">
+          <div class="ai-icon">${p.icon}</div>
+          <div class="ai-name">${p.name}</div>
+          <div class="ai-status ${sc}">${val}</div>
+        </div>`;
+      }).join("");
+
+      const rationaleHtml = (data.rationale || "")
+        .split(/(?<=[.!?])\s+/)
+        .filter(Boolean)
+        .map(s => `<p>${s}</p>`)
+        .join("");
+
+      el.innerHTML = `<div class="results-wrap" style="max-width:900px;margin:0 auto;">
+        <div class="results-header">
+          <div class="results-brand">Audit results for</div>
+          <div class="results-title"><span>${brand}</span></div>
+        </div>
+
+        <div class="scores-grid">
+          <div class="score-card trust">
+            <div class="score-eyebrow">Trust Signal Score</div>
+            <div class="ring-wrap">
+              ${ringPath(data.trustScore, 100, "var(--pink)")}
+              <div class="ring-center">
+                <span class="ring-value">${data.trustScore}</span>
+                <span class="ring-denom">/100</span>
+              </div>
+            </div>
+            <div class="score-name">Brand Trust Index</div>
+            <div class="score-verdict">${data.trustVerdict}</div>
+          </div>
+          <div class="score-card ai">
+            <div class="score-eyebrow">AI Visibility Score</div>
+            <div class="ring-wrap">
+              ${ringPath(data.aiScore, 100, "var(--teal)")}
+              <div class="ring-center">
+                <span class="ring-value">${data.aiScore}</span>
+                <span class="ring-denom">/100</span>
+              </div>
+            </div>
+            <div class="score-name">AI Overview Presence</div>
+            <div class="score-verdict">${data.aiVerdict}</div>
+          </div>
+        </div>
+
+        <div class="divider"><span>5 Trust Signals Breakdown</span></div>
+        <div class="breakdown-grid">${signalsHtml}</div>
+
+        <div class="divider"><span>AI Platform Visibility</span></div>
+        <div class="ai-grid">${aiHtml}</div>
+
+        <div class="divider"><span>Audit Rationale</span></div>
+        <div class="rationale-box">
+          <div class="rt-label">Analysis</div>
+          ${rationaleHtml}
+        </div>
+      </div>`;
+
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    function renderLoading(brand) {
+      let step = 0;
+      const el = document.getElementById("results-section");
+
+      function buildSteps(active) {
+        return LOAD_STEPS.map((s, i) =>
+          `<div class="load-step ${i < active ? 'done' : i === active ? 'active' : ''}">
+            ${i < active ? '✓ ' : i === active ? '→ ' : '  '}${s}
+          </div>`
+        ).join("");
+      }
+
+      el.innerHTML = `<div class="loading-wrap">
+        <div class="sp-loader"></div>
+        <div class="loading-brand">Auditing ${brand}…</div>
+        <div class="loading-sub">Searching the open web in real time</div>
+        <div class="load-steps" id="loadSteps">${buildSteps(0)}</div>
+      </div>`;
+
+      el.scrollIntoView({ behavior: "smooth", block: "start" });
+
+      const timer = setInterval(() => {
+        step = Math.min(step + 1, LOAD_STEPS.length - 1);
+        const s = document.getElementById("loadSteps");
+        if (s) s.innerHTML = buildSteps(step);
+      }, 4000);
+
+      return timer;
+    }
+
+    async function runAudit() {
+      const input = document.getElementById("brandInput");
+      const btn   = document.getElementById("auditBtn");
+      const brand = input.value.trim();
+      if (!brand) return;
+
+      btn.disabled = true;
+      btn.textContent = "Auditing…";
+
+      const timer = renderLoading(brand);
+
+      const systemPrompt = `You are an expert local SEO and AI search visibility auditor. Given a brand name, use web search to research the brand, then output ONLY a JSON object — no markdown fences, no commentary — with this exact structure:
+
+{
+  "trustScore": <integer 0-100>,
+  "aiScore": <integer 0-100>,
+  "trustVerdict": "<1-sentence verdict>",
+  "aiVerdict": "<1-sentence verdict>",
+  "signals": [
+    { "name": "E-E-A-T & Location Content",   "status": "<Pass|Warn|Fail>", "note": "<1-2 sentences>" },
+    { "name": "Review Volume & Sentiment",      "status": "<Pass|Warn|Fail>", "note": "<1-2 sentences>" },
+    { "name": "NAP Consistency",               "status": "<Pass|Warn|Fail>", "note": "<1-2 sentences>" },
+    { "name": "Third-Party Citations",          "status": "<Pass|Warn|Fail>", "note": "<1-2 sentences>" },
+    { "name": "Branded Search Volume",         "status": "<Pass|Warn|Fail>", "note": "<1-2 sentences>" }
+  ],
+  "aiPlatforms": {
+    "google":  "<Yes|No|Partial>",
+    "chatgpt": "<Yes|No|Partial>",
+    "gemini":  "<Yes|No|Partial>",
+    "claude":  "<Yes|No|Partial>",
+    "bing":    "<Yes|No|Partial>"
+  },
+  "rationale": "<3-4 sentence rationale with specific recommendations>"
+}
+
+Base scores on real evidence from web search. trustScore = 5 trust signals quality. aiScore = AI platform coverage confidence. Unknown/obscure brands score lower.`;
+
+      try {
+        const res = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 1000,
+            system: systemPrompt,
+            tools: [{ type: "web_search_20250305", name: "web_search" }],
+            messages: [{ role: "user", content: `Audit this brand: "${brand}"` }],
+          }),
+        });
+
+        const data = await res.json();
+        clearInterval(timer);
+
+        const allText = (data.content || [])
+          .filter(b => b.type === "text").map(b => b.text).join("\n");
+
+        const match = allText.match(/\{[\s\S]*\}/);
+        if (!match) throw new Error("Could not parse audit response.");
+        const parsed = JSON.parse(match[0]);
+        renderResults(parsed, brand);
+
+      } catch (e) {
+        clearInterval(timer);
+        document.getElementById("results-section").innerHTML =
+          `<div style="max-width:900px;margin:0 auto;padding:0 0 40px;">
+            <div class="error-box">Audit failed — ${e.message || "unknown error"}. Please try again.</div>
+          </div>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Run Audit →";
+      }
+    }
+
+    document.getElementById("brandInput").addEventListener("keydown", e => {
+      if (e.key === "Enter") runAudit();
+    });
+  </script>
+</body>
+</html>
