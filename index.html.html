@@ -882,27 +882,17 @@
 Base scores on real evidence from web search. trustScore = 5 trust signals quality. aiScore = AI platform coverage confidence. Unknown/obscure brands score lower.`;
 
       try {
-        const res = await fetch("https://api.anthropic.com/v1/messages", {
+        const res = await fetch("/api/audit", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
-            max_tokens: 1000,
-            system: systemPrompt,
-            tools: [{ type: "web_search_20250305", name: "web_search" }],
-            messages: [{ role: "user", content: `Audit this brand: "${brand}"` }],
-          }),
+          body: JSON.stringify({ brand }),
         });
 
-        const data = await res.json();
         clearInterval(timer);
 
-        const allText = (data.content || [])
-          .filter(b => b.type === "text").map(b => b.text).join("\n");
-
-        const match = allText.match(/\{[\s\S]*\}/);
-        if (!match) throw new Error("Could not parse audit response.");
-        const parsed = JSON.parse(match[0]);
+        if (!res.ok) throw new Error("Audit request failed");
+        const parsed = await res.json();
+        if (parsed.error) throw new Error(parsed.error);
         renderResults(parsed, brand);
 
       } catch (e) {
